@@ -24,12 +24,13 @@ model User {
 
   // Relations
   students         Student[]         @relation("ParentStudents")
+  driverId         Int
   driver           Driver?
   notifications    Notification[]
   chatParticipants ChatParticipant[]
   messagesSent     Message[]
-  panicsAsDriver   Panic[]
   posts            Post[]
+  supportTickets   SupportTicket[]
 }
 
 model AuthToken {
@@ -74,7 +75,7 @@ model Driver {
   trips           Trip[]
   buses           Bus[]
   driverBehaviors DriverBehavior[] // now linked properly
-  Panic           Panic[]
+  panics          Panic[]
 }
 
 model Bus {
@@ -249,12 +250,10 @@ model Panic {
   createdAt   DateTime  @default(now())
   resolvedAt  DateTime?
 
-  driver  Driver?  @relation(fields: [driverId], references: [id])
+  driver  Driver   @relation(fields: [driverId], references: [id])
   trip    Trip?    @relation(fields: [tripId], references: [id])
   student Student? @relation(fields: [studentId], references: [id])
   bus     Bus?     @relation(fields: [busId], references: [id])
-  User    User?    @relation(fields: [userId], references: [id])
-  userId  Int?
 }
 
 //////////////////////////////////////////////////////
@@ -272,6 +271,26 @@ model DriverBehavior {
 
   driver Driver @relation(fields: [driverId], references: [id]) // now links to Driver
   trip   Trip?  @relation(fields: [tripId], references: [id])
+}
+
+model SystemLog {
+  id        Int      @id @default(autoincrement())
+  level     String // info | warn | error
+  message   String
+  meta      String?
+  createdAt DateTime @default(now())
+}
+
+model SupportTicket {
+  id        Int      @id @default(autoincrement())
+  userId    Int?
+  subject   String
+  message   String
+  status    String   @default("open")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User? @relation(fields: [userId], references: [id])
 }
 
 //////////////////////////////////////////////////////

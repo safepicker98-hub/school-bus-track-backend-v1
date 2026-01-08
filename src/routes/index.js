@@ -13,6 +13,9 @@ const attendanceRoutes = require('../modules/attendance/attendance.routes');
 const notificationRoutes = require('../modules/notification/notification.routes');
 const chatRoutes = require('../modules/chats/chat.routes');
 const panicRoutes = require('../modules/panic/panic.routes');
+const driverBehaviorRoutes = require('../modules/driverBehavior/driverBehavior.routes');
+const reportsRoutes = require('../modules/reports/reports.routes');
+const systemRoutes = require('../modules/system/system.routes');
 
 router.use('/user', userRoutes);
 router.use('/auth', authRoutes);
@@ -26,5 +29,8 @@ router.use('/attendance', attendanceRoutes);
 router.use('/notifications', notificationRoutes);
 router.use('/chats', chatRoutes);
 router.use('/panic', panicRoutes);
+router.use('/driverbehavior', driverBehaviorRoutes);
+router.use('/reports', reportsRoutes);
+router.use('/system', systemRoutes);
 
 module.exports = router;
